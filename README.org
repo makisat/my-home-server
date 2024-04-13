@@ -1,0 +1,6 @@
+#+title: Readme
+#+author: makisat
+
+* Development Todos
+** DONE [[file:routes.go::43][finish delete_link function]]
+** DONE [[file:routes.go::15][finish get_links function]]
