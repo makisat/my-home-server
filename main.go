@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -28,6 +29,11 @@ func main() {
 
 	// new app
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "",
+		AllowHeaders: "*",
+	}))
 
 	// gets
 	app.Get("/ping", ping)
