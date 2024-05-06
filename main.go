@@ -21,7 +21,7 @@ func main() {
 	defer db.Close()
 
 	// create table if not exist
-	initStatement := `CREATE TABLE IF NOT EXISTS links (link_id INTEGER PRIMARY KEY, link_name TEXT NOT NULL, url TEXT NOT NULL);`
+	initStatement := `CREATE TABLE IF NOT EXISTS links (id INTEGER PRIMARY KEY, link_name TEXT NOT NULL, url TEXT NOT NULL);`
 	_, err := db.Exec(initStatement)
 	if err != nil {
 		log.Println("error executing initStatement: " + err.Error())
@@ -31,8 +31,9 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "",
-		AllowHeaders: "*",
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, POST, DELETE",
 	}))
 
 	// gets
@@ -41,7 +42,7 @@ func main() {
 
 	// posts
 	app.Post("/add-link", add_link)
-	app.Post("/delete-link", delete_link)
+	app.Delete("/delete-link/:id", delete_link)
 
 	log.Fatal(app.Listen(":8080"))
 }

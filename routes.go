@@ -64,19 +64,17 @@ func add_link(c *fiber.Ctx) error {
 }
 
 func delete_link(c *fiber.Ctx) error {
-	stmt, err := db.Prepare("DELETE FROM links WHERE link_id = ?")
+	stmt, err := db.Prepare("DELETE FROM links WHERE id = ?")
 	if err != nil {
 		log.Fatal("error at prepare: " + err.Error())
 		return c.SendStatus(http.StatusBadRequest)
 	}
 	defer stmt.Close()
 
-	target_link := new(Link)
-	if err := c.BodyParser(target_link); err != nil {
-		return c.SendStatus(http.StatusBadRequest)
-	}
+	target_link := c.Params("id")
+	log.Println("target link: " + target_link)
 
-	_, err = stmt.Exec(target_link.Id)
+	_, err = stmt.Exec(target_link)
 	if err != nil {
 		log.Fatal("error at execute: " + err.Error())
 		return c.SendStatus(http.StatusBadRequest)
